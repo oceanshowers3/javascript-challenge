@@ -1,8 +1,16 @@
 // from data.js
 var tableData = data;
 
-// reference table body element
+// referencess for html elements
 var tableBody = d3.select("tbody");
+var buttonSearch = d3.select("#filter-btn");
+var buttonReset = d3.select("#reset-btn");
+var searchDate = d3.select("#searchDate");
+var searchCity = d3.select("#searchCity");
+var searchState = d3.select("#searchState");
+var searchCountry = d3.select("#searchCountry");
+var searchShape = d3.select("#searchShape");
+
 
 // for each UFO sighting:
 tableData.forEach((ufoSighting) => {
@@ -20,46 +28,120 @@ tableData.forEach((ufoSighting) => {
 });
 
 
-// Creating References
-var $tbody = d3.select("tbody");
-var button = d3.select("#filter-btn");
-var inputFieldDate = d3.select("#datetime");
-var inputFieldCity = d3.select("#city");
-
-// @TODO : Create said buttons for new said var inputs
-// var inputFieldState = d3.select("#state");
-// var inputFieldCountry = d3.select("#country");
-// var inputFieldShape = d3.select("shape");
-
-var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
-// console.log(columns);
-
-
-
-// Inputing the data into the HTML
-var addData = (dataInput) => {
-    dataInput.forEach(ufoSightings => {
-        var row = $tbody.append("tr");
-        columns.forEach(column => row.append("td").text(ufoSightings[column])
-        )
-    });
-}
-
-addData(tableData);
-
-
-// set up function for button clicks
-button.on("click", () => {    
+// set up function for search button clicks
+buttonSearch.on("click", () => {    
 
     d3.event.preventDefault();
 	
-	// Business rule: use the first text box w a value as only search term:
-	
-	// 1. Get what the user searched for:
+	// reference what was entered into input fields
     var inputDate = searchDate.property("value");
     var inputCity = searchCity.property("value").toLowerCase();
     var inputState = searchState.property("value").toLowerCase();
     var inputCountry = searchCountry.property("value").toLowerCase();
     var inputShape = searchShape.property("value").toLowerCase();
-		
 	
+    // if the user enters a date:
+	if(inputDate){
+		// filter the data
+		var filteredData = tableData.filter(tableData => tableData.datetime === inputDate);
+	
+		// load the filtered data
+		if(filteredData.length !== 0) {
+			loadTableRows(filteredData);
+		}
+		else { // if no rows matched search
+			// reset table body
+			tableBody.html("");
+			
+			// display no data message
+			tableBody.append("tr").append("td").text("There are no sightings that match your search. Please try again.");
+		}
+	}
+
+    // if the user enters a city:
+	else if(inputCity) {
+		// filter the data
+		var filteredData = tableData.filter(tableData => tableData.city === inputCity);
+	
+		// load the filtered data
+		if(filteredData.length !== 0) {
+			loadTableRows(filteredData);
+		}
+		else { // if no rows matched search
+            // reset table body
+            tableBody.html("");
+                
+            // display no data message
+            tableBody.append("tr").append("td").text("There are no sightings that match your search. Please try again.");
+		}
+	}
+
+    // if the user enters a state:
+	else if(inputState) {
+		// filter the data
+		var filteredData = tableData.filter(tableData => tableData.state === inputState);
+	
+		// load the filtered data
+		if(filteredData.length !== 0) {
+			loadTableRows(filteredData);
+		}
+		else { // if no rows matched search
+			// reset table body
+			tableBody.html("");
+			
+			// display no data message
+			tableBody.append("tr").append("td").text("There are no sightings that match your search. Please try again.");
+		}
+	}
+
+    // if the user enters a country:
+	else if(inputCountry) {
+		// filter the data
+		var filteredData = tableData.filter(tableData => tableData.country === inputCountry);
+	
+		// load the filtered data
+		if(filteredData.length !== 0) {
+			loadTableRows(filteredData);
+		}
+		else { // if no rows matched search
+			// reset table body
+			tableBody.html("");
+			
+			// display no data message
+			tableBody.append("tr").append("td").text("There are no sightings that match your search. Please try again.");
+		}
+	}
+
+    // if the user enters a shape:
+	else { 
+		// filter the data
+		var filteredData = tableData.filter(tableData => tableData.shape === inputShape);
+	
+		// load the filtered data
+		if(filteredData.length !== 0) {
+			loadTableRows(filteredData);
+		}
+		else { // if no rows matched search
+			// reset table body
+			tableBody.html("");
+			
+			// display no data message
+			tableBody.append("tr").append("td").text("There are no sightings that match your search. Please try again.");
+		}
+	}
+})
+
+
+// set up function for reset button clicks
+btnReset.on("click", () => {
+	
+    // reset each element 
+	document.getElementById("searchDate").value="";
+	document.getElementById("searchCity").value="";
+	document.getElementById("searchState").value="";
+	document.getElementById("searchCountry").value="";
+	document.getElementById("searchShape").value="";
+	
+	// load the original database
+	loadTableRows(tableData);
+})

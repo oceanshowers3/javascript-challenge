@@ -26,6 +26,7 @@ var button = d3.select("#filter-btn");
 // set up function for button clicks
 button.on("click", function() {
 
+    d3.event.preventDefault();
     tableBody.html("");
 
     // reference the input date element
