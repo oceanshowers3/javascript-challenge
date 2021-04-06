@@ -13,7 +13,7 @@ tableData.forEach((ufoSighting) => {
     // for each row/sighting:
     Object.entries(ufoSighting).forEach(([key, value]) => {
         
-      // append info about each sighting
+      // append info to each cell
         var tableInfo = tableRow.append("td");
         tableInfo.text(value);
     });
@@ -37,17 +37,18 @@ button.on("click", function() {
     // filter the data so it only displays data relative to input date
     var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
 
-    // for each 
-    filteredData.forEach(function(selections) {
+    // for each date in filteredData: 
+    filteredData.forEach((input) => {
 
-        // Append one table row `tr` for each UFO Sighting object
-        var row = tbody.append("tr");
-        // Use `Object.entries` to console.log each UFO Sighting value
-        Object.entries(selections).forEach(function([key, value]) {
-            console.log(key, value);
-            // Append a cell to the row for each value
-            var cell = row.append("td");
-            cell.text(value);
+        // append rows for each UFO sighting
+        var tableRow = tableBody.append("tr");
+        
+        // for each row/sighting:
+        Object.entries(input).forEach(([key, value]) => {
+        
+            // append info to each cell
+            var tableInfo = tableRow.append("td");
+            tableInfo.text(value);
         });
     });
 });
