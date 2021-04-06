@@ -37,7 +37,7 @@ button.on("click", function() {
     // filter the data so it only displays data relative to input date
     var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
 
-    // for each date in filteredData: 
+    // for each sighting in filteredData: 
     filteredData.forEach((input) => {
 
         // append rows for each UFO sighting
