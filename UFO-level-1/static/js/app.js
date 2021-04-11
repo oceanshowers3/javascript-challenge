@@ -24,7 +24,7 @@ tableData.forEach((ufoSighting) => {
 var button = d3.select("#filter-btn");
 
 // set up function for button clicks
-button.on("click", function() {
+button.on("click", () => {
 
     d3.event.preventDefault();
     tableBody.html("");

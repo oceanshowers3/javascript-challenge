@@ -4,7 +4,6 @@ var tableData = data;
 // referencess for html elements
 var tableBody = d3.select("tbody");
 var buttonSearch = d3.select("#filter-btn");
-var buttonReset = d3.select("#reset-btn");
 var searchDate = d3.select("#searchDate");
 var searchCity = d3.select("#searchCity");
 var searchState = d3.select("#searchState");
@@ -13,26 +12,34 @@ var searchShape = d3.select("#searchShape");
 
 
 // for each UFO sighting:
-tableData.forEach((ufoSighting) => {
+var tableLoad = ((defaultTable) => { 
+	// reset table data
+    tableBody.html("");
 
-    // append row for each sighting
-    var tableRow = tableBody.append("tr");
+	// for each UFO sighting
+	defaultTable.forEach((ufoSighting) => {
 
-    // for each row/sighting:
-    Object.entries(ufoSighting).forEach(([key, value]) => {
-        
-      // append info to each cell
-        var tableInfo = tableRow.append("td");
-        tableInfo.text(value);
-    });
+		// append row for each sighting
+		var tableRow = tableBody.append("tr");
+
+		// for each row/sighting:
+		Object.entries(ufoSighting).forEach(([key, value]) => {
+			
+		// append info to each cell
+			var tableInfo = tableRow.append("td");
+			tableInfo.text(value);
+		});
+	});
 });
 
+// call the tableLoad function to display default table
+tableLoad(tableData)
 
 // set up function for search button clicks
 buttonSearch.on("click", () => {    
 
-    d3.event.preventDefault();
-	
+	d3.event.preventDefault();
+    
 	// reference what was entered into input fields
     var inputDate = searchDate.property("value");
     var inputCity = searchCity.property("value").toLowerCase();
@@ -43,11 +50,11 @@ buttonSearch.on("click", () => {
     // if the user enters a date:
 	if(inputDate){
 		// filter the data
-		var filteredData = tableData.filter(tableData => tableData.datetime === inputDate);
+		var filteredData = tableData.filter(sighting => sighting.datetime === inputDate);
 	
 		// load the filtered data
 		if(filteredData.length !== 0) {
-			loadTableRows(filteredData);
+			tableLoad(filteredData);
 		}
 		else { // if no rows matched search
 			// reset table body
@@ -61,11 +68,11 @@ buttonSearch.on("click", () => {
     // if the user enters a city:
 	else if(inputCity) {
 		// filter the data
-		var filteredData = tableData.filter(tableData => tableData.city === inputCity);
+		var filteredData = tableData.filter(sighting => sighting.city === inputCity);
 	
 		// load the filtered data
 		if(filteredData.length !== 0) {
-			loadTableRows(filteredData);
+			tableLoad(filteredData);
 		}
 		else { // if no rows matched search
             // reset table body
@@ -79,11 +86,11 @@ buttonSearch.on("click", () => {
     // if the user enters a state:
 	else if(inputState) {
 		// filter the data
-		var filteredData = tableData.filter(tableData => tableData.state === inputState);
+		var filteredData = tableData.filter(sighting => sighting.state === inputState);
 	
 		// load the filtered data
 		if(filteredData.length !== 0) {
-			loadTableRows(filteredData);
+			tableLoad(filteredData);
 		}
 		else { // if no rows matched search
 			// reset table body
@@ -97,11 +104,11 @@ buttonSearch.on("click", () => {
     // if the user enters a country:
 	else if(inputCountry) {
 		// filter the data
-		var filteredData = tableData.filter(tableData => tableData.country === inputCountry);
+		var filteredData = tableData.filter(sighting => sighting.country === inputCountry);
 	
 		// load the filtered data
 		if(filteredData.length !== 0) {
-			loadTableRows(filteredData);
+			tableLoad(filteredData);
 		}
 		else { // if no rows matched search
 			// reset table body
@@ -115,11 +122,11 @@ buttonSearch.on("click", () => {
     // if the user enters a shape:
 	else { 
 		// filter the data
-		var filteredData = tableData.filter(tableData => tableData.shape === inputShape);
+		var filteredData = tableData.filter(sighting => sighting.shape === inputShape);
 	
 		// load the filtered data
 		if(filteredData.length !== 0) {
-			loadTableRows(filteredData);
+			tableLoad(filteredData);
 		}
 		else { // if no rows matched search
 			// reset table body
@@ -129,19 +136,4 @@ buttonSearch.on("click", () => {
 			tableBody.append("tr").append("td").text("There are no sightings that match your search. Please try again.");
 		}
 	}
-})
-
-
-// set up function for reset button clicks
-btnReset.on("click", () => {
-	
-    // reset each element 
-	document.getElementById("searchDate").value="";
-	document.getElementById("searchCity").value="";
-	document.getElementById("searchState").value="";
-	document.getElementById("searchCountry").value="";
-	document.getElementById("searchShape").value="";
-	
-	// load the original database
-	loadTableRows(tableData);
 })
